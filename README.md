@@ -15,7 +15,7 @@ Instead of finding the fastest route, DETOUR NYC finds the most roundabout, scen
 | 🐢 The Long Way | Maximum travel time — the most roundabout route possible |
 | 🔀 Transfer Frenzy | Most line changes — zigzag across the entire system |
 | 📍 Every Stop | Maximum stations visited — the grand borough-hopping tour |
-| 🎲 Side Quest | A random unexpected detour before your destination |
+| 🎲 Detour Roulette | A random unexpected detour before your destination |
 
 ---
 
