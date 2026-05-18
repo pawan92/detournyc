@@ -592,13 +592,13 @@ footer a{color:var(--text-3);text-decoration:underline}
     </div>
   </div>
 
-  <div class="sec-label">Choose Your Adventure</div>
+  <div class="sec-label">Detour Modes</div>
   <div class="mode-card">
     <div class="mode-tabs" id="modeTabs">
       <button class="mtab on" data-mode="longest">🐢 The Long Way</button>
       <button class="mtab"    data-mode="transfers">🔀 Transfer Frenzy</button>
       <button class="mtab"    data-mode="stops">📍 Every Stop</button>
-      <button class="mtab"    data-mode="sidequest">🎲 Side Quest</button>
+      <button class="mtab"    data-mode="sidequest">🎲 Detour Roulette</button>
     </div>
     <div class="mode-body">
       <div class="mode-ico" id="modeIco" style="background:rgba(238,53,46,.1)">🐢</div>
@@ -681,9 +681,7 @@ footer a{color:var(--text-3);text-decoration:underline}
 </main>
 
 <footer>
-  ⚠️ DETOUR NYC is for entertainment only — please don't actually take these routes to work.<br>
-  Static schedule data based on MTA GTFS feeds. Not affiliated with MTA.<br>
-  <a href="https://new.mta.info/" target="_blank">Data: Metropolitan Transportation Authority</a>
+  For entertainment only. Not affiliated with the MTA. · <a href="https://new.mta.info/" target="_blank">Data: Metropolitan Transportation Authority</a>
 </footer>
 
 <script>
@@ -1095,7 +1093,7 @@ const MMETA={
   longest:  {label:'The Long Way',    icon:'🐢',color:'#EE352E',desc:'Maximum travel time. We\'ll find the most roundabout, scenic route possible. We have all day.'},
   transfers:{label:'Transfer Frenzy', icon:'🔀',color:'#FCCC0A',desc:'Most line changes. Zigzag across the system and collect train lines like Pokémon.'},
   stops:    {label:'Every Stop',      icon:'📍',color:'#00933C',desc:'Maximum stations visited. The grand borough-hopping tour of New York City.'},
-  sidequest:{label:'Side Quest',      icon:'🎲',color:'#B933AD',desc:'A random, unexpected detour before your destination. You\'ll get there. Eventually.'},
+  sidequest:{label:'Detour Roulette', icon:'🎲',color:'#B933AD',desc:'A random, unexpected detour before your destination. You\'ll get there. Eventually.'},
 };
 document.getElementById('modeTabs').addEventListener('click',e=>{
   const tab=e.target.closest('.mtab');if(!tab)return;
@@ -1194,7 +1192,7 @@ const RMETA={
   longest:  {badge:'🐢 The Long Way',  title:r=>`${Math.round(r.time)}-Minute Odyssey`,   sub:r=>r.detourVia?`Detoured via ${r.detourVia}.`:`That's a lot of subway.`},
   transfers:{badge:'🔀 Transfer Frenzy',title:r=>`${r.xfers} Line Change${r.xfers!==1?'s':''}`,sub:()=>`Your MetroCard is getting a serious workout today.`},
   stops:    {badge:'📍 Grand Tour',    title:r=>`${r.stops}-Station Adventure`,            sub:()=>`Every station, no shortcuts.`},
-  sidequest:{badge:'🎲 Side Quest',   title:r=>r.sideStop?`Via ${r.sideStop.split('–')[0].trim()}`:`Mystery Route`,sub:r=>r.sideStop?`Quick detour to ${r.sideStop} first.`:`Trust the process.`},
+  sidequest:{badge:'🎲 Detour Roulette',title:r=>r.sideStop?`Via ${r.sideStop.split('–')[0].trim()}`:`Mystery Route`,sub:r=>r.sideStop?`Quick detour to ${r.sideStop} first.`:`Trust the process.`},
 };
 
 function lc(l){return LC[l]||'#808080';}
