@@ -51,6 +51,7 @@ header{
   font-weight:800;line-height:.88;letter-spacing:-.025em;
 }
 .logo em{color:var(--red);font-style:normal}
+.logo{cursor:pointer}
 .tagline{
   font-family:'Syne',sans-serif;
   font-size:.68rem;font-weight:600;
@@ -1034,6 +1035,15 @@ function updateModePreview(){
 function initApp(){
   makeAC('originInput','originAC',id=>{originId=id;updateModePreview();});
   makeAC('destInput','destAC',id=>{destId=id;updateModePreview();});
+  document.querySelector('.logo').addEventListener('click',()=>{
+    originId=null; destId=null;
+    document.getElementById('originInput').value='';
+    document.getElementById('destInput').value='';
+    document.getElementById('results').classList.remove('on');
+    document.getElementById('errbox').classList.remove('on');
+    history.replaceState(null,'',location.pathname);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
   // Enable inputs + button now that data is ready
   document.getElementById('originInput').disabled=false;
   document.getElementById('destInput').disabled=false;
