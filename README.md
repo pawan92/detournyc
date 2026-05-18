@@ -1,6 +1,6 @@
 # DETOUR NYC
 
-**The Anti-Navigation App for NYC Subway.**
+**Subway routes for people not in a hurry.**
 
 Instead of finding the fastest route, DETOUR NYC finds the most roundabout, scenic, and chaotic path between any two stations. Built for exploration, not efficiency.
 
