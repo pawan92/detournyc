@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    { "source": "/((?!graph\\.json$).*)", "destination": "/detournyc.html" }
+  ],
+  "headers": [
+    {
+      "source": "/graph.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" },
+        { "key": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    }
+  ]
+}
