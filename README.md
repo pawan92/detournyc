@@ -32,6 +32,8 @@ The app uses a weighted graph of the NYC subway system built from MTA GTFS data.
    ```
 3. `graph.json` contains all stations and directed edges with travel times and headsigns
 
+The parser filters to **weekday daytime trips only** (6am–10pm). This ensures express lines like the 2/3/4/5 only show their actual express stops — overnight service runs these trains local, which would otherwise inject false local-stop edges into the graph.
+
 ### Stack
 
 - Vanilla HTML/CSS/JS — no framework, no build step
