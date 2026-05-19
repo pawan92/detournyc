@@ -249,7 +249,10 @@ def parse(source, out_path):
     print(f"     {len(parent_map)} stops mapped")
 
     # 2. Routes (subway only)
-    EXCLUDE = {"FX", "6X", "7X", "SIR"}
+    # Z runs rush-hour skip-stop only; J covers all the same stops during
+    # regular service, so excluding Z avoids suggesting a train that's only
+    # running ~2.5 hrs/day.
+    EXCLUDE = {"FX", "6X", "7X", "SIR", "Z"}
 
     print("2/4  Parsing routes...")
     routes_raw   = read_csv(source, "routes.txt")
