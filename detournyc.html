@@ -1583,122 +1583,96 @@ function absurdityLine(route, fastest){
 
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-// ── The Long Way / Side Quest: quips keyed on extra minutes ──────────────────
+// ── The Long Way / Side Quest: quips ─────────────────────────────────────────
 function vsQuip(diff){
-  if(diff>=120) return pick([
-    `Two hours you didn't need to spend. Perfectly spent.`,
-    `You could have been home by now. You chose this. Correct.`,
+  return pick([
     `${diff} extra minutes of the greatest city in the world.`,
+    `You could have been home by now. You chose this. Correct.`,
     `The direct route would have been faster. This was better.`,
     `At this point you're not commuting, you're pilgriming.`,
-  ]);
-  if(diff>=90) return pick([
     `An extra ${diff} minutes of pure, uncut NYC.`,
-    `Ninety-plus minutes of bonus New York. You've earned it.`,
+    `Time well not-saved.`,
     `The long way home. The very long way.`,
     `This is what commitment looks like.`,
     `Somewhere, a Google Maps algorithm is filing a noise complaint.`,
-  ]);
-  if(diff>=60) return pick([
-    `Over an hour longer than necessary. Beautiful.`,
-    `An hour is nothing when you have nowhere to be.`,
-    `Sixty minutes of scenic detour. Not one wasted.`,
+    `${diff} minutes longer than necessary. Beautiful.`,
+    `Time is nothing when you have nowhere to be.`,
+    `${diff} minutes of scenic detour. Not one wasted.`,
     `The odyssey continues. And continues.`,
     `You could have read. You rode instead. No regrets.`,
-  ]);
-  if(diff>=30) return pick([
-    `Half an hour of bonus adventure.`,
-    `Thirty minutes longer, infinitely more interesting.`,
+    `A stretch of bonus adventure.`,
+    `${diff} minutes longer, infinitely more interesting.`,
     `A meaningful detour. A small act of rebellion.`,
     `${diff} minutes off-script. This is the way.`,
     `The scenic route, if the scenery is mostly underground.`,
-  ]);
-  if(diff>=10) return pick([
     `${diff} minutes of scenic detour.`,
     `Worth every extra minute.`,
     `Not the fastest. Definitely the most interesting.`,
     `A modest detour with outsized spirit.`,
     `Even small odysseys count.`,
-  ]);
-  return pick([
     `Every minute counts when you're not in a hurry.`,
     `Even small detours are acts of resistance.`,
     `The scenic route starts somewhere.`,
     `A detour is a detour, however brief.`,
+    `The MTA didn't suggest this route. You did.`,
   ]);
 }
 
-// ── Transfer Frenzy: quips keyed on line-change count ────────────────────────
+// ── Transfer Frenzy: quips ────────────────────────────────────────────────────
 function xferQuip(n){
-  if(n>=8) return pick([
+  return pick([
     `${n} transfers. This should require a permit.`,
     `Your MetroCard is considering early retirement.`,
     `${n} line changes. A new personal record for the ages.`,
     `At this point you're not a commuter, you're a collector.`,
     `The MTA didn't design this route. You invented it.`,
-  ]);
-  if(n>=6) return pick([
     `Your MetroCard filed a formal complaint.`,
     `${n} transfers. The subway gods are watching.`,
     `You've changed trains more times than most people change their minds today.`,
     `${n} line changes. Chaotic. Masterful.`,
     `This is what they mean by "getting around."`,
-  ]);
-  if(n>=4) return pick([
     `A serious zigzag through the system.`,
     `${n} transfers. Casual.`,
     `Collecting train lines like Pokémon.`,
     `Every transfer is a plot twist.`,
     `${n} changes of scenery, all underground.`,
-  ]);
-  if(n>=2) return pick([
     `Each one a small act of chaos.`,
     `A respectable number of line changes.`,
     `${n} transfers. The odyssey has texture.`,
     `The art of the transfer, practiced.`,
-    `Two platforms, two trains, one detour.`,
-  ]);
-  return pick([
     `Even one transfer is a choice.`,
     `One change. One small act of defiance.`,
     `The journey within the journey.`,
+    `${n} platforms. ${n} moments of possibility.`,
   ]);
 }
 
-// ── Every Stop: quips keyed on station count ─────────────────────────────────
+// ── Every Stop: quips ─────────────────────────────────────────────────────────
 function stopsQuip(n){
-  if(n>=50) return pick([
+  return pick([
     `You've seen more of NYC than most cabs ever will.`,
     `At this point you're basically an honorary MTA employee.`,
     `${n} stations. A dissertation on the underground.`,
     `Most lifelong New Yorkers haven't been to half these stops.`,
     `You didn't ride the subway. You audited it.`,
-  ]);
-  if(n>=35) return pick([
     `That's ${Math.round(n/472*100)}% of the entire NYC subway system.`,
     `A grand tour of the underground.`,
     `${n} stations. The city has been thoroughly explored.`,
     `Few people will ever see this much of the subway in one sitting.`,
     `An encyclopedic route. Impressive. Unnecessary. Perfect.`,
-  ]);
-  if(n>=25) return pick([
-    `A grand tour by any measure.`,
     `${n} stops. A respectable odyssey.`,
     `The city reveals itself, one station at a time.`,
     `Most tourists see five stops. You saw ${n}.`,
     `Comprehensive coverage of the underground network.`,
-  ]);
-  if(n>=15) return pick([
     `Every stop a new story.`,
     `Getting to know the system, intimately.`,
     `${n} stations. A proper tour begins.`,
     `Each stop a chapter. This is a novella.`,
     `You've covered more ground than you think.`,
-  ]);
-  return pick([
     `A modest start to a bigger journey.`,
     `Every station counts.`,
     `The odyssey must start somewhere.`,
+    `${n} stops. The city doesn't run out.`,
   ]);
 }
 
