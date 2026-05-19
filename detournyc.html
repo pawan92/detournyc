@@ -345,7 +345,8 @@ main{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:2.5rem 1
   font-weight:800;letter-spacing:-.025em;line-height:1.05;
   margin-bottom:.35rem;
 }
-.r-sub{font-size:.83rem;color:var(--text-2);margin-bottom:1.5rem}
+.r-sub{font-size:.83rem;color:var(--text-2);margin-bottom:.35rem}
+.r-arrival{font-size:.78rem;color:var(--text-3);margin-bottom:1.5rem}
 
 /* stats */
 .sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:.7rem}
@@ -640,6 +641,7 @@ footer a{color:var(--text-3);text-decoration:underline}
     <div class="r-badge" id="rBadge">🐢 The Long Way</div>
     <div class="r-title" id="rTitle">Your Route</div>
     <div class="r-sub"   id="rSub"></div>
+    <div class="r-arrival" id="rArrival"></div>
     <div class="svs-hero" id="sVsHero">
       <div>
         <div class="svs-num" id="sVs">—</div>
@@ -1701,6 +1703,9 @@ function renderResults(route,fastest){
   document.getElementById('rBadge').textContent=m.badge;
   document.getElementById('rTitle').textContent=m.title(route);
   document.getElementById('rSub').textContent=m.sub(route);
+  const arrivalMs=Date.now()+Math.round(route.time)*60000;
+  const arrivalStr=new Date(arrivalMs).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+  document.getElementById('rArrival').textContent=`Depart now → arrive ~${arrivalStr} · estimate based on schedule data`;
   document.getElementById('sTime').textContent=Math.round(route.time);
   document.getElementById('sXfers').textContent=route.xfers;
   document.getElementById('sStops').textContent=route.stops;
