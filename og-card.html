@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Figtree:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #F4F2ED;
+    font-family: 'Figtree', sans-serif;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .red-panel {
+    background: #EE352E;
+    width: 480px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 56px;
+    position: relative;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 88px;
+    line-height: 0.92;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .logo .nyc {
+    color: rgba(255,255,255,0.55);
+  }
+
+  .tagline {
+    margin-top: 28px;
+    font-family: 'Figtree', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
+  .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 64px;
+    gap: 32px;
+  }
+
+  .stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 72px;
+    color: #EE352E;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-lbl {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a8377;
+  }
+
+  .divider {
+    width: 40px;
+    height: 2px;
+    background: #EAE7DF;
+    border-radius: 2px;
+  }
+
+  .url {
+    position: absolute;
+    bottom: 36px;
+    right: 56px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* subtle dot grid on the right panel */
+  .right-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: 480px;
+    background-image: radial-gradient(circle, #c8c3b8 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-position: 14px 14px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <div class="red-panel">
+    <div class="logo">DETOUR<br><span class="nyc">NYC</span></div>
+    <div class="tagline">Subway routes for people<br>not in a hurry.</div>
+    <div class="url">detournyc.com</div>
+  </div>
+  <div class="right-panel">
+    <div class="stat-row">
+      <div class="stat-num">+90m</div>
+      <div class="stat-lbl">vs Direct Route</div>
+    </div>
+    <div class="divider"></div>
+    <div class="stat-row">
+      <div class="stat-num">86</div>
+      <div class="stat-lbl">Stations Visited</div>
+    </div>
+    <div class="divider"></div>
+    <div class="stat-row">
+      <div class="stat-num">7</div>
+      <div class="stat-lbl">Line Changes</div>
+    </div>
+  </div>
+</body>
+</html>
