@@ -3,141 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1200">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Figtree:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     width: 1200px;
     height: 630px;
-    background: #F4F2ED;
-    font-family: 'Figtree', sans-serif;
+    background: #EE352E;
+    font-family: 'Syne', sans-serif;
     overflow: hidden;
     display: flex;
-    align-items: stretch;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 72px 80px;
+    position: relative;
   }
 
-  .red-panel {
-    background: #EE352E;
-    width: 480px;
-    flex-shrink: 0;
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.12) 1.5px, transparent 1.5px);
+    background-size: 36px 36px;
+    background-position: 18px 18px;
+    pointer-events: none;
+  }
+
+  .top {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 64px 56px;
+    justify-content: space-between;
+    align-items: flex-start;
     position: relative;
   }
 
   .logo {
-    font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: 88px;
-    line-height: 0.92;
+    font-size: 96px;
+    line-height: 0.9;
     color: #fff;
     letter-spacing: -0.02em;
   }
 
   .logo .nyc {
-    color: rgba(255,255,255,0.55);
+    color: rgba(255,255,255,0.4);
   }
 
-  .tagline {
-    margin-top: 28px;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #18150F;
-    line-height: 1.5;
-    letter-spacing: 0.01em;
-  }
-
-  .right-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 64px 64px;
-    gap: 32px;
-  }
-
-  .stat-row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  .stat-block {
+    text-align: right;
+    padding-top: 8px;
   }
 
   .stat-num {
-    font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: 72px;
-    color: #EE352E;
+    font-size: 56px;
+    color: rgba(255,255,255,0.9);
     line-height: 1;
     letter-spacing: -0.02em;
   }
 
   .stat-lbl {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #8a8377;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
   }
 
-  .divider {
-    width: 40px;
-    height: 2px;
-    background: #EAE7DF;
-    border-radius: 2px;
+  .bottom {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .tagline {
+    font-weight: 800;
+    font-size: 40px;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
   .url {
-    position: absolute;
-    bottom: 36px;
-    right: 56px;
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
-  }
-
-  /* subtle dot grid on the right panel */
-  .right-panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    left: 480px;
-    background-image: radial-gradient(circle, #c8c3b8 1px, transparent 1px);
-    background-size: 28px 28px;
-    background-position: 14px 14px;
-    opacity: 0.45;
-    pointer-events: none;
+    color: rgba(255,255,255,0.4);
+    white-space: nowrap;
   }
 </style>
 </head>
 <body>
-  <div class="red-panel">
+  <div class="top">
     <div class="logo">DETOUR<br><span class="nyc">NYC</span></div>
-    <div class="tagline">Subway routes for people<br>not in a hurry.</div>
-    <div class="url">detournyc.com</div>
-  </div>
-  <div class="right-panel">
-    <div class="stat-row">
+    <div class="stat-block">
       <div class="stat-num">+90m</div>
       <div class="stat-lbl">vs Direct Route</div>
     </div>
-    <div class="divider"></div>
-    <div class="stat-row">
-      <div class="stat-num">86</div>
-      <div class="stat-lbl">Stations Visited</div>
-    </div>
-    <div class="divider"></div>
-    <div class="stat-row">
-      <div class="stat-num">7</div>
-      <div class="stat-lbl">Line Changes</div>
-    </div>
+  </div>
+  <div class="bottom">
+    <div class="tagline">Subway routes for people not in a hurry.</div>
+    <div class="url">detour.nyc</div>
   </div>
 </body>
 </html>
