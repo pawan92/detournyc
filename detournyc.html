@@ -380,7 +380,6 @@ main{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:2.5rem 1
 }
 .svs-right{text-align:right}
 .svs-lbl{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9)}
-.svs-quip{font-size:.8rem;color:rgba(255,255,255,.85);font-style:italic;margin-top:.25rem;line-height:1.4}
 .absurdity-note{
   font-size:.8rem;color:var(--text-2);
   background:var(--bg2);border-radius:10px;
@@ -646,9 +645,6 @@ footer a{color:var(--text-3);text-decoration:underline}
       <div>
         <div class="svs-num" id="sVs">—</div>
         <div class="svs-lbl">vs Direct Route</div>
-      </div>
-      <div class="svs-right">
-        <div class="svs-quip" id="sVsQuip"></div>
       </div>
     </div>
 
@@ -1541,35 +1537,62 @@ function absurdityLine(route, fastest){
 
   // ── Ratio jokes ─────────────────────────────────────────────────────────────
   if(ratio&&ratio>=4)   pool.push(`${ratio.toFixed(1)}× the direct route. This isn't a commute, it's a lifestyle.`);
+  if(ratio&&ratio>=4)   pool.push(`${ratio.toFixed(1)}× longer. At some point this becomes a philosophical statement.`);
   if(ratio&&ratio>=3)   pool.push(`${ratio.toFixed(1)}× longer than necessary. The MTA couldn't have planned this better.`);
+  if(ratio&&ratio>=3)   pool.push(`${ratio.toFixed(1)}× the distance. Efficiency is overrated anyway.`);
   if(ratio&&ratio>=2.5) pool.push(`You're taking the scenic route to an extreme degree. ${ratio.toFixed(1)}× extreme.`);
+  if(ratio&&ratio>=2.5) pool.push(`${ratio.toFixed(1)}× longer and somehow still cheaper than a cab.`);
   if(ratio&&ratio>=2)   pool.push(`Twice as long as it needs to be. Twice as memorable.`);
+  if(ratio&&ratio>=2)   pool.push(`The direct route exists. You chose not to acknowledge it.`);
 
   // ── Extra minutes jokes ─────────────────────────────────────────────────────
   if(diff&&diff>=90) pool.push(`${diff} extra minutes. That's almost enough time to read the MTA's apology for the delays you'll encounter on this very route.`);
+  if(diff&&diff>=90) pool.push(`${diff} bonus minutes of NYC. You could have been home, showered, and started dinner.`);
   if(diff&&diff>=60) pool.push(`An entire extra hour of New York City. You earned it.`);
+  if(diff&&diff>=60) pool.push(`${diff} extra minutes. That's not a detour, that's a commitment.`);
   if(diff&&diff>=45) pool.push(`${diff} minutes of bonus NYC. More than most tourists get in a day.`);
+  if(diff&&diff>=45) pool.push(`${diff} extra minutes underground. The city reveals itself slowly.`);
   if(diff&&diff>=20) pool.push(`${diff} extra minutes to ponder your choices. We support it.`);
+  if(diff&&diff>=20) pool.push(`${diff} minutes longer than the algorithm expected. The algorithm was wrong.`);
+  if(diff&&diff>=10) pool.push(`${diff} extra minutes. Every one of them intentional.`);
 
   // ── Borough observations ─────────────────────────────────────────────────────
   if(boroughs.length>=4) pool.push(`Touches ${boroughs.length} boroughs. Staten Island once again left on read.`);
   if(boroughs.length>=4) pool.push(`A four-borough sweep. The governor should issue a proclamation.`);
+  if(boroughs.length>=4) pool.push(`${boroughs.length} boroughs. You've seen more of New York in one ride than most see in a month.`);
   if(boroughs.length===3) pool.push(`Three boroughs in one route. This is either tourism or a problem.`);
   if(boroughs.length===3) pool.push(`You'll cross borough lines ${boroughs.length-1} times. Pack accordingly.`);
+  if(boroughs.length===3) pool.push(`Three boroughs. One ride. Zero regrets.`);
+  if(boroughs.length>=2) pool.push(`Multi-borough. The way the city was meant to be explored.`);
   if(boroughs.includes('Bronx')&&boroughs.includes('Brooklyn')) pool.push(`From the Bronx to Brooklyn: a journey even the pigeons don't make voluntarily.`);
+  if(boroughs.includes('Bronx')&&boroughs.includes('Brooklyn')) pool.push(`Bronx to Brooklyn: the whole vertical stretch of the city, end to end.`);
   if(boroughs.includes('Queens')&&boroughs.includes('Manhattan')) pool.push(`Queens to Manhattan: the commute millions make daily, just with extra steps.`);
+  if(boroughs.includes('Queens')&&boroughs.includes('Manhattan')) pool.push(`Queens and Manhattan in one route. Classic New York.`);
+  if(boroughs.includes('Bronx')&&boroughs.includes('Queens')) pool.push(`Bronx to Queens without touching Manhattan. A rare arc.`);
 
   // ── Transfer quips ──────────────────────────────────────────────────────────
   if(route.xfers>=7) pool.push(`${route.xfers} transfers. At this point you're not commuting, you're collecting trains.`);
+  if(route.xfers>=7) pool.push(`${route.xfers} line changes. The MTA owes you a loyalty reward.`);
   if(route.xfers>=5) pool.push(`${route.xfers} line changes. Your MetroCard asked to speak to a manager.`);
+  if(route.xfers>=5) pool.push(`${route.xfers} transfers. You've touched more lines than the average New Yorker does in a week.`);
   if(route.xfers>=4) pool.push(`${route.xfers} transfers. You've seen more train interiors than most MTA workers.`);
+  if(route.xfers>=4) pool.push(`${route.xfers} line changes. Chaotic. Intentional. Correct.`);
   if(route.xfers>=3) pool.push(`${route.xfers} transfers. A connoisseur's route.`);
+  if(route.xfers>=3) pool.push(`${route.xfers} trains. Each one a plot twist.`);
+  if(route.xfers>=2) pool.push(`${route.xfers} transfers. The odyssey has layers.`);
+  if(route.xfers===1) pool.push(`One transfer. Clean. Deliberate. Still a detour.`);
 
   // ── Stop count jokes ────────────────────────────────────────────────────────
   if(route.stops>=45) pool.push(`${route.stops} stations. You could name-drop this route at parties and people would believe you.`);
+  if(route.stops>=45) pool.push(`${route.stops} stations. A dissertation on the underground.`);
   if(route.stops>=35) pool.push(`${route.stops} stations. That's ${Math.round(route.stops/472*100)}% of the entire NYC subway system.`);
+  if(route.stops>=35) pool.push(`${route.stops} stops. Most lifelong New Yorkers haven't been to half of these.`);
   if(route.stops>=25) pool.push(`${route.stops} stops. You'll have seen more of NYC than most lifelong residents.`);
+  if(route.stops>=25) pool.push(`${route.stops} stations. The city reveals itself, one platform at a time.`);
   if(route.stops>=15) pool.push(`${route.stops} stations visited. A solid percentage of your 10,000 steps right there.`);
+  if(route.stops>=15) pool.push(`${route.stops} stops. Each one a small world.`);
+  if(route.stops>=10) pool.push(`${route.stops} stations. You didn't ride the subway. You explored it.`);
+  if(route.stops>=5)  pool.push(`${route.stops} stops. Not the most, not the least. Exactly right.`);
 
   // ── Always-eligible fallbacks ───────────────────────────────────────────────
   pool.push(`A scenic route through the greatest transit system in the world. Allegedly.`);
@@ -1577,103 +1600,13 @@ function absurdityLine(route, fastest){
   pool.push(`The MTA didn't design this route. You did. Respect.`);
   pool.push(`Somewhere out there, a Google Maps algorithm is deeply confused.`);
   pool.push(`This route has never been ridden before. You're a pioneer.`);
+  pool.push(`The long way is sometimes the only way.`);
+  pool.push(`Efficiency is a myth. Adventure is not.`);
+  pool.push(`A detour is just a route with more personality.`);
+  pool.push(`Every stop is someone's neighborhood. You saw a few of them.`);
+  pool.push(`The direct route gets you there. This route gets you somewhere.`);
 
   return pool[Math.floor(Math.random()*pool.length)];
-}
-
-function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-// ── The Long Way / Side Quest: quips ─────────────────────────────────────────
-function vsQuip(diff){
-  return pick([
-    `${diff} extra minutes of the greatest city in the world.`,
-    `You could have been home by now. You chose this. Correct.`,
-    `The direct route would have been faster. This was better.`,
-    `At this point you're not commuting, you're pilgriming.`,
-    `An extra ${diff} minutes of pure, uncut NYC.`,
-    `Time well not-saved.`,
-    `The long way home. The very long way.`,
-    `This is what commitment looks like.`,
-    `Somewhere, a Google Maps algorithm is filing a noise complaint.`,
-    `${diff} minutes longer than necessary. Beautiful.`,
-    `Time is nothing when you have nowhere to be.`,
-    `${diff} minutes of scenic detour. Not one wasted.`,
-    `The odyssey continues. And continues.`,
-    `You could have read. You rode instead. No regrets.`,
-    `A stretch of bonus adventure.`,
-    `${diff} minutes longer, infinitely more interesting.`,
-    `A meaningful detour. A small act of rebellion.`,
-    `${diff} minutes off-script. This is the way.`,
-    `The scenic route, if the scenery is mostly underground.`,
-    `${diff} minutes of scenic detour.`,
-    `Worth every extra minute.`,
-    `Not the fastest. Definitely the most interesting.`,
-    `A modest detour with outsized spirit.`,
-    `Even small odysseys count.`,
-    `Every minute counts when you're not in a hurry.`,
-    `Even small detours are acts of resistance.`,
-    `The scenic route starts somewhere.`,
-    `A detour is a detour, however brief.`,
-    `The MTA didn't suggest this route. You did.`,
-  ]);
-}
-
-// ── Transfer Frenzy: quips ────────────────────────────────────────────────────
-function xferQuip(n){
-  return pick([
-    `${n} transfers. This should require a permit.`,
-    `Your MetroCard is considering early retirement.`,
-    `${n} line changes. A new personal record for the ages.`,
-    `At this point you're not a commuter, you're a collector.`,
-    `The MTA didn't design this route. You invented it.`,
-    `Your MetroCard filed a formal complaint.`,
-    `${n} transfers. The subway gods are watching.`,
-    `You've changed trains more times than most people change their minds today.`,
-    `${n} line changes. Chaotic. Masterful.`,
-    `This is what they mean by "getting around."`,
-    `A serious zigzag through the system.`,
-    `${n} transfers. Casual.`,
-    `Collecting train lines like Pokémon.`,
-    `Every transfer is a plot twist.`,
-    `${n} changes of scenery, all underground.`,
-    `Each one a small act of chaos.`,
-    `A respectable number of line changes.`,
-    `${n} transfers. The odyssey has texture.`,
-    `The art of the transfer, practiced.`,
-    `Even one transfer is a choice.`,
-    `One change. One small act of defiance.`,
-    `The journey within the journey.`,
-    `${n} platforms. ${n} moments of possibility.`,
-  ]);
-}
-
-// ── Every Stop: quips ─────────────────────────────────────────────────────────
-function stopsQuip(n){
-  return pick([
-    `You've seen more of NYC than most cabs ever will.`,
-    `At this point you're basically an honorary MTA employee.`,
-    `${n} stations. A dissertation on the underground.`,
-    `Most lifelong New Yorkers haven't been to half these stops.`,
-    `You didn't ride the subway. You audited it.`,
-    `That's ${Math.round(n/472*100)}% of the entire NYC subway system.`,
-    `A grand tour of the underground.`,
-    `${n} stations. The city has been thoroughly explored.`,
-    `Few people will ever see this much of the subway in one sitting.`,
-    `An encyclopedic route. Impressive. Unnecessary. Perfect.`,
-    `${n} stops. A respectable odyssey.`,
-    `The city reveals itself, one station at a time.`,
-    `Most tourists see five stops. You saw ${n}.`,
-    `Comprehensive coverage of the underground network.`,
-    `Every stop a new story.`,
-    `Getting to know the system, intimately.`,
-    `${n} stations. A proper tour begins.`,
-    `Each stop a chapter. This is a novella.`,
-    `You've covered more ground than you think.`,
-    `A modest start to a bigger journey.`,
-    `Every station counts.`,
-    `The odyssey must start somewhere.`,
-    `${n} stops. The city doesn't run out.`,
-  ]);
 }
 
 function renderResults(route,fastest){
@@ -1690,24 +1623,19 @@ function renderResults(route,fastest){
   const diff=fastest?Math.round(Math.max(0,route.time-fastest.time)):null;
 
   // Hero stat: champion the metric this mode is actually about
-  let heroNum, heroLbl, heroQuip;
+  let heroNum, heroLbl;
   if(aMode==='transfers'){
     heroNum=route.xfers;
     heroLbl='Line Changes';
-    heroQuip=xferQuip(route.xfers);
   } else if(aMode==='stops'){
     heroNum=route.stops;
     heroLbl='Stations Visited';
-    heroQuip=stopsQuip(route.stops);
   } else {
-    // longest + sidequest: vs-direct time is the point
     heroNum=diff!=null?`+${diff}m`:'—';
     heroLbl='vs Direct Route';
-    heroQuip=diff!=null?vsQuip(diff):'';
   }
 
   document.getElementById('sVs').textContent=heroNum;
-  document.getElementById('sVsQuip').textContent=heroQuip;
   document.getElementById('sVsHero').querySelector('.svs-lbl').textContent=heroLbl;
 
   // Count-up on the hero number
