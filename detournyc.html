@@ -1072,6 +1072,7 @@ function initApp(){
     originId=pFrom; destId=pTo;
     document.getElementById('originInput').value=ST[pFrom].n;
     document.getElementById('destInput').value=ST[pTo].n;
+    updateModePreview();
     if(pMode&&MMETA[pMode]){
       aMode=pMode;
       document.querySelectorAll('.mtab').forEach(t=>t.classList.toggle('on',t.dataset.mode===pMode));
@@ -1167,6 +1168,7 @@ document.getElementById('quickBtns').addEventListener('click',e=>{
   originId=fId; destId=tId;
   document.getElementById('originInput').value=ST[fId].n;
   document.getElementById('destInput').value=ST[tId].n;
+  updateModePreview();
   // Fire immediately — no second click needed
   document.getElementById('ctaBtn').click();
 });
