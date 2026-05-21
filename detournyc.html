@@ -543,6 +543,15 @@ footer a{color:var(--text-3);text-decoration:underline}
   .svs-hero{flex-direction:column;align-items:flex-start;gap:.4rem}
   .svs-right{text-align:left}
 }
+.share-route-btn{
+  background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);
+  color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;
+  letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1.1rem;
+  border-radius:999px;cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:background .15s,border-color .15s;
+}
+.share-route-btn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.7)}
+.share-route-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </style>
 </head>
 <body>
@@ -661,6 +670,7 @@ footer a{color:var(--text-3);text-decoration:underline}
         <div class="svs-num" id="sVs">—</div>
         <div class="svs-lbl">vs Direct Route</div>
       </div>
+      <button class="share-route-btn" id="shareRouteBtn" aria-label="Share this route">Share Route</button>
     </div>
 
     <div class="result-cols">
@@ -1882,6 +1892,31 @@ function buildTimeline(route){
       i++;
     }
   }
+}
+
+// ── Share route URL ───────────────────────────────────────────────────────────
+document.getElementById('shareRouteBtn').addEventListener('click',async()=>{
+  const url=location.href;
+  const title=document.getElementById('rTitle').textContent;
+  const btn=document.getElementById('shareRouteBtn');
+  if(navigator.share){
+    try{ await navigator.share({title:`DETOUR NYC — ${title}`,url}); }
+    catch(e){ if(e.name!=='AbortError') await copyLink(url,btn); }
+  } else {
+    await copyLink(url,btn);
+  }
+});
+
+async function copyLink(url,btn){
+  try{ await navigator.clipboard.writeText(url); }
+  catch(e){
+    const inp=document.createElement('input');
+    inp.value=url;document.body.appendChild(inp);inp.select();
+    document.execCommand('copy');document.body.removeChild(inp);
+  }
+  const orig=btn.textContent;
+  btn.textContent='✓ Copied!';
+  setTimeout(()=>btn.textContent=orig,2000);
 }
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
