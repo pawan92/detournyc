@@ -667,9 +667,9 @@ footer a{color:var(--text-3);text-decoration:underline}
       <!-- Left: stats + absurdity + timeline -->
       <div class="dir-col">
         <div class="sgrid">
-          <div class="scard"><div class="snum" id="sTime">—</div><div class="slbl">Minutes</div></div>
-          <div class="scard"><div class="snum" id="sXfers">—</div><div class="slbl">Transfers</div></div>
-          <div class="scard"><div class="snum" id="sStops">—</div><div class="slbl">Stations</div></div>
+          <div class="scard"><div class="snum" id="sTime">—</div><div class="slbl">🐢 Minutes</div></div>
+          <div class="scard"><div class="snum" id="sXfers">—</div><div class="slbl">🎪 Transfers</div></div>
+          <div class="scard"><div class="snum" id="sStops">—</div><div class="slbl">🗺 Stations</div></div>
         </div>
         <div class="absurdity-note" id="absurdityNote" style="display:none"></div>
         <div class="timeline" id="timeline"></div>
@@ -1744,11 +1744,11 @@ function makeCard(i, path, delay, legTime, legDestId, showBoro){
   const dirTag=dir?` <span class="tdir">${dir}</span>`:'';
 
   let instruct='';
-  if(isStart)        instruct=`Board the <strong>${dep}</strong> train${dirTag}`;
-  else if(isEnd)     instruct=`Exit here — you've arrived!`;
-  else if(isXfer)    instruct=`Get off &amp; transfer to the <strong>${dep}</strong> train${dirTag}`;
-  else if(dep==='T') instruct=`Get off here — walk to connecting platform`;
-  else if(arr==='T') instruct=`Board the <strong>${dep}</strong> train${dirTag}`;
+  if(isStart)        instruct=`🚇 Board the <strong>${dep}</strong> train${dirTag}`;
+  else if(isEnd)     instruct=`🎉 Exit here — you've arrived!`;
+  else if(isXfer)    instruct=`🔀 Get off &amp; transfer to the <strong>${dep}</strong> train${dirTag}`;
+  else if(dep==='T') instruct=`🚶 Get off here — walk to connecting platform`;
+  else if(arr==='T') instruct=`🚇 Board the <strong>${dep}</strong> train${dirTag}`;
   else               instruct=`Stay on the <strong>${arr}</strong> train${dirTag}`;
 
   // T = walk edge — show neutral dot, not a T badge
