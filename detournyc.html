@@ -1182,9 +1182,9 @@ document.getElementById('ctaBtn').addEventListener('click',()=>{
   // Auto-pick first match if user typed but didn't click an autocomplete item
   if(!originId){const t=document.getElementById('originInput').value.trim();if(t){const m=findStation(t);if(m){originId=m;document.getElementById('originInput').value=ST[m].n;}}}
   if(!destId){const t=document.getElementById('destInput').value.trim();if(t){const m=findStation(t);if(m){destId=m;document.getElementById('destInput').value=ST[m].n;}}}
-  if(!originId){etxt.textContent='Please select a starting station.';err.classList.add('on');return;}
-  if(!destId){etxt.textContent='Please select a destination station.';err.classList.add('on');return;}
-  if(originId===destId){etxt.textContent='Start and destination can\'t be the same.';err.classList.add('on');return;}
+  if(!originId){etxt.textContent='Every detour needs a starting point. Pick a station.';err.classList.add('on');return;}
+  if(!destId){etxt.textContent='Even a detour goes somewhere. Eventually. Pick a destination.';err.classList.add('on');return;}
+  if(originId===destId){etxt.textContent="That's just standing on the platform. Pick a different destination.";err.classList.add('on');return;}
   const ld=document.getElementById('loading'),res=document.getElementById('results');
   res.classList.remove('on');ld.classList.add('on');
   const msgs=LMSGS[aMode]||LMSGS.longest;
@@ -1197,7 +1197,7 @@ document.getElementById('ctaBtn').addEventListener('click',()=>{
     else if(aMode==='transfers') route=transferRoute(originId,destId);
     else if(aMode==='stops')     route=stopsRoute(originId,destId);
     else                          route=sideQuestRoute(originId,destId);
-    if(!route){etxt.textContent='No route found. Try a different station pair.';err.classList.add('on');return;}
+    if(!route){etxt.textContent='We came up empty. Try a different station pair.';err.classList.add('on');return;}
     renderResults(route,fastest);
     res.classList.add('on');
     setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),100);
