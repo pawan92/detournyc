@@ -1486,9 +1486,7 @@ function shareMapPng(route){
     const canvas=document.createElement('canvas');
     canvas.width=1200;canvas.height=900;
     const ctx=canvas.getContext('2d');
-    // Scale SVG to canvas
     ctx.drawImage(img,0,0,1200,900);
-    // Overlay title
     const title=document.getElementById('rTitle').textContent;
     ctx.fillStyle='rgba(244,242,237,.92)';
     ctx.fillRect(0,0,1200,64);
@@ -1500,8 +1498,19 @@ function shareMapPng(route){
       const a=document.createElement('a');
       a.href=URL.createObjectURL(b);
       a.download=`detournyc-${Date.now()}.png`;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
     },'image/png');
+  };
+  img.onerror=()=>{
+    URL.revokeObjectURL(url);
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([svgStr],{type:'image/svg+xml'}));
+    a.download=`detournyc-${Date.now()}.svg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
   img.src=url;
 }
