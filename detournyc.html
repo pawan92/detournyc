@@ -1753,11 +1753,12 @@ function makeCard(i, path, delay, legTime, legDestId, showBoro){
   else if(arr==='T') instruct=`🚇 Board the <strong>${dep}</strong> train${dirTag}`;
   else               instruct=`Stay on the <strong>${arr}</strong> train${dirTag}`;
 
-  // T = walk edge — show neutral dot, not a T badge
-  const showArr=arr&&arr!=='T';
-  const dotBg=isStart||isEnd?'#18150F':(showArr?lc(arr):'#D1CEC9');
-  const dotTxt=isStart||isEnd?'#fff':(showArr?yt(arr):'#888');
-  const dotLabel=isStart?'A':isEnd?'B':(showArr?(arr||''):'🚶');
+  // Dot shows departure line ("what leaves from here") — consistent with the
+  // connector below it, and avoids showing N when you're actually about to walk.
+  const showDep=dep&&dep!=='T';
+  const dotBg=isStart||isEnd?'#18150F':(showDep?lc(dep):'#D1CEC9');
+  const dotTxt=isStart||isEnd?'#fff':(showDep?yt(dep):'#888');
+  const dotLabel=isStart?'A':isEnd?'B':(showDep?dep:'🚶');
   const connBg=dep&&dep!=='T'?lc(dep):'#D1CEC9';
 
   // Full-leg time and destination: use caller-supplied values when an accordion
