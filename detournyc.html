@@ -1816,7 +1816,7 @@ function makeCard(i, path, delay, legTime, legDestId, showBoro){
 function makeAccordion(indices, line, path, delay, firstEdgeTime){
   const lineColor=lc(line), lineTxt=yt(line);
   const totalTime=indices.reduce((s,j)=>s+(path[j+1]?.t||0),0);
-  const label=`${indices.length} stop${indices.length!==1?'s':''} · stay on board`;
+  const label=`${indices.length} stop${indices.length!==1?'s':''}`;
 
   const el=document.createElement('div');
   el.className='leg-acc';
