@@ -1057,6 +1057,7 @@ function initApp(){
     document.getElementById('results').classList.remove('on');
     document.getElementById('errbox').classList.remove('on');
     history.replaceState(null,'',location.pathname);
+    updateModePreview();
     window.scrollTo({top:0,behavior:'smooth'});
   });
   // Enable inputs + button now that data is ready
