@@ -613,10 +613,10 @@ footer a{color:var(--text-3);text-decoration:underline}
   <div class="sec-label">Detour Modes</div>
   <div class="mode-card">
     <div class="mode-tabs" id="modeTabs">
-      <button class="mtab on" data-mode="longest">🐢 The Long Way</button>
-      <button class="mtab"    data-mode="transfers">🔀 Transfer Frenzy</button>
-      <button class="mtab"    data-mode="stops">📍 Every Stop</button>
-      <button class="mtab"    data-mode="sidequest">🎲 Detour Roulette</button>
+      <button class="mtab on" data-mode="longest"   aria-pressed="true">🐢 The Long Way</button>
+      <button class="mtab"    data-mode="transfers" aria-pressed="false">🔀 Transfer Frenzy</button>
+      <button class="mtab"    data-mode="stops"     aria-pressed="false">📍 Every Stop</button>
+      <button class="mtab"    data-mode="sidequest" aria-pressed="false">🎲 Detour Roulette</button>
     </div>
     <div class="mode-body">
       <div class="mode-ico" id="modeIco" style="background:rgba(238,53,46,.1)">🐢</div>
@@ -630,7 +630,7 @@ footer a{color:var(--text-3);text-decoration:underline}
 
   <button class="cta" id="ctaBtn">FIND THE LONGEST ROUTE →</button>
 
-  <div class="errbox" id="errbox"><span>⚠</span><span id="errTxt"></span></div>
+  <div class="errbox" id="errbox" role="alert" aria-live="assertive"><span>⚠</span><span id="errTxt"></span></div>
 
   </div><!-- /.form-wrap -->
 
@@ -682,12 +682,12 @@ footer a{color:var(--text-3);text-decoration:underline}
           <div class="map-card-hd">
             <div class="map-card-hd-l">Route Map <span id="mapStationCount"></span></div>
             <div class="map-card-hd-r">
-              <button class="map-mini-btn" id="sharePngBtn">↑ Share</button>
+              <button class="map-mini-btn" id="sharePngBtn" aria-label="Share route map as image">↑ Share</button>
               <button class="map-mini-btn" onclick="window.print()">Print</button>
             </div>
           </div>
           <svg id="routeMap" class="map-svg" viewBox="0 0 1000 900"
-               xmlns="http://www.w3.org/2000/svg" aria-label="Route map"></svg>
+               xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Route map"></svg>
         </div>
         <button class="map-expand-btn" id="mapExpandBtn">Expand map ▾</button>
       </div>
@@ -1076,7 +1076,7 @@ function initApp(){
     updateModePreview();
     if(pMode&&MMETA[pMode]){
       aMode=pMode;
-      document.querySelectorAll('.mtab').forEach(t=>t.classList.toggle('on',t.dataset.mode===pMode));
+      document.querySelectorAll('.mtab').forEach(t=>{const on=t.dataset.mode===pMode;t.classList.toggle('on',on);t.setAttribute('aria-pressed',on?'true':'false');});
       const m=MMETA[pMode];
       const ico=document.getElementById('modeIco');
       ico.textContent=m.icon;ico.style.background=m.color+'1a';
@@ -1115,8 +1115,8 @@ const MMETA={
 };
 document.getElementById('modeTabs').addEventListener('click',e=>{
   const tab=e.target.closest('.mtab');if(!tab)return;
-  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('on'));
-  tab.classList.add('on');aMode=tab.dataset.mode;
+  document.querySelectorAll('.mtab').forEach(t=>{t.classList.remove('on');t.setAttribute('aria-pressed','false');});
+  tab.classList.add('on');tab.setAttribute('aria-pressed','true');aMode=tab.dataset.mode;
   const m=MMETA[aMode];
   const ico=document.getElementById('modeIco');
   ico.textContent=m.icon;ico.style.background=m.color+'1a';
@@ -1248,6 +1248,9 @@ function buildMap(route,fastest){
   const svg=document.getElementById('routeMap');
   svg.innerHTML='';
   const path=route.path;
+  const mapFrom=ST[path[0]?.s]?.n||'origin';
+  const mapTo=ST[path[path.length-1]?.s]?.n||'destination';
+  svg.setAttribute('aria-label',`Route map: ${mapFrom} to ${mapTo}`);
 
   // Update header immediately (before anything that could throw)
   const boroughs=[...new Set(path.map(p=>ST[p.s]?.b).filter(Boolean))];
@@ -1835,9 +1838,10 @@ function makeAccordion(indices, line, path, delay, firstEdgeTime){
   }).join('');
 
   el.innerHTML=`
-    <button class="leg-acc-toggle" onclick="
-      this.nextElementSibling.classList.toggle('open');
+    <button class="leg-acc-toggle" aria-expanded="false" onclick="
+      const open=this.nextElementSibling.classList.toggle('open');
       this.querySelector('.acc-arrow').classList.toggle('open');
+      this.setAttribute('aria-expanded',open);
     ">
       <div class="tpill" style="background:${lineColor};color:${lineTxt};width:1.4rem;height:1.4rem;font-size:.52rem;flex-shrink:0">${line}</div>
       <span>${label}</span>
