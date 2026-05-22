@@ -460,9 +460,14 @@ main{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:2.5rem 1
 }
 .tride{
   font-size:.74rem;color:var(--text-2);
-  margin-top:.28rem;display:flex;align-items:center;gap:.38rem;
+  margin-top:.28rem;display:flex;flex-direction:column;gap:.22rem;
 }
-.tride-dest{color:var(--text-3);font-size:.68rem;margin-left:.1rem}
+.tride-top{display:flex;align-items:center;gap:.38rem}
+.tride-dest{
+  font-size:.82rem;font-weight:700;color:var(--text-1);
+  padding-left:.1rem;
+}
+.tride-dest-label{font-size:.64rem;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;margin-right:.25rem}
 .walk-leg{font-size:.74rem;color:var(--text-2);font-weight:500}
 .leg-acc{
   margin:0 0 .55rem 2.4rem;
@@ -1792,12 +1797,16 @@ function makeCard(i, path, delay, legTime, legDestId, showBoro){
       ${showBoro?`<div class="tboro">${ST[step.s]?.b||''}</div>`:''}
       <div class="tinstruct">${instruct}</div>
       ${next?(dep==='T'?`<div class="tride">
-        <span class="walk-leg">🚶 Walk <strong>${Math.round(next.t)} min</strong></span>
-        <span class="tride-dest">→ ${ST[next.s]?.n||'next stop'}</span>
+        <div class="tride-top">
+          <span class="walk-leg">🚶 Walk <strong>${Math.round(next.t)} min</strong></span>
+        </div>
+        <div class="tride-dest"><span class="tride-dest-label">Exit at</span>${ST[next.s]?.n||'next stop'}</div>
       </div>`:`<div class="tride">
-        <div class="tpill" style="background:${lc(dep)};color:${yt(dep)}">${dep}</div>
-        <span>Ride <strong>${Math.round(rideTime)} min</strong></span>
-        <span class="tride-dest">→ ${ST[rideDestId]?.n||'next stop'}</span>
+        <div class="tride-top">
+          <div class="tpill" style="background:${lc(dep)};color:${yt(dep)}">${dep}</div>
+          <span>Ride <strong>${Math.round(rideTime)} min</strong></span>
+        </div>
+        <div class="tride-dest"><span class="tride-dest-label">Exit at</span>${ST[rideDestId]?.n||'next stop'}</div>
       </div>`):`<div class="anote">✓ Total journey complete. Worth it.</div>`}
     </div>`;
   return el;
@@ -1807,7 +1816,7 @@ function makeCard(i, path, delay, legTime, legDestId, showBoro){
 function makeAccordion(indices, line, path, delay, firstEdgeTime){
   const lineColor=lc(line), lineTxt=yt(line);
   const totalTime=indices.reduce((s,j)=>s+(path[j+1]?.t||0),0);
-  const label=`${indices.length} intermediate stop${indices.length!==1?'s':''}`;
+  const label=`${indices.length} stop${indices.length!==1?'s':''} · stay on board`;
 
   const el=document.createElement('div');
   el.className='leg-acc';
