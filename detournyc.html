@@ -391,6 +391,7 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
   font-variant-numeric:tabular-nums;
 }
 .svs-right{text-align:right}
+.svs-hero > div{display:flex;flex-direction:column;gap:.3rem}
 .svs-lbl{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9)}
 .absurdity-note{
   font-size:.8rem;color:var(--text-2);
@@ -445,6 +446,20 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
 }
 .xfer-action{display:flex;align-items:center;gap:.4rem;font-size:.74rem;color:var(--text-2);font-weight:500}
 .xfer-ride{font-size:.74rem;color:var(--text-2);font-weight:500;margin-top:.22rem}
+/* What now row */
+.whatnow-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem;margin-left:calc(2.4rem + .7rem)}
+.whatnow-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  border:1.5px solid var(--border);border-radius:50px;
+  background:var(--card);color:var(--text-1);
+  font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:.52rem 1rem;cursor:pointer;
+  transition:border-color .18s,background .18s,transform .15s;
+  white-space:nowrap;
+}
+.whatnow-btn:hover{border-color:var(--red);color:var(--red);box-shadow:0 0 0 3px var(--red-s),var(--sh-sm);transform:translateY(-1px)}
+.whatnow-btn:active{transform:none}
 .tcard.done{border-color:rgba(0,147,60,.3);background:#F5FBF7}
 .tcard.walk-arrival{}
 .tname{font-family:'JetBrains Mono',monospace;font-size:.87rem;font-weight:500;color:var(--text-1);line-height:1.3;margin-bottom:.15rem}
@@ -1722,23 +1737,82 @@ function renderResults(route,fastest){
   const shareBtn=document.getElementById('sharePngBtn');
   shareBtn.onclick=()=>shareMapPng(route);
 
-  // Side Quest: add re-roll button
-  const tl=document.getElementById('timeline');
-  const existing=document.getElementById('rerollBtn');
+  buildWhatNow();
+}
+
+function buildWhatNow(){
+  const existing=document.getElementById('whatnowRow');
   if(existing)existing.remove();
+
+  const modeNext={longest:'transfers',transfers:'longest',stops:'sidequest',sidequest:'stops'};
+  const modeLabel={longest:'The Long Way',transfers:'Transfer Frenzy',stops:'Every Stop',sidequest:'Detour Roulette'};
+  const modeIcon={longest:'🐢',transfers:'🔀',stops:'📍',sidequest:'🎲'};
+
+  const row=document.createElement('div');
+  row.id='whatnowRow';
+  row.className='whatnow-row';
+
+  // First pill: Roll again (sidequest) or Try [alternate mode]
+  const firstBtn=document.createElement('button');
+  firstBtn.className='whatnow-btn';
   if(aMode==='sidequest'){
-    const btn=document.createElement('button');
-    btn.id='rerollBtn';
-    btn.className='cta';
-    btn.style.marginTop='1.2rem';
-    btn.textContent='🎲 ROLL AGAIN →';
-    btn.addEventListener('click',()=>{
+    firstBtn.innerHTML='🎲 Roll again';
+    firstBtn.addEventListener('click',()=>{
       const fastest2=dijkstra(originId,destId);
       const r=sideQuestRoute(originId,destId);
       if(r){renderResults(r,fastest2);}
     });
-    tl.after(btn);
+  } else {
+    const next=modeNext[aMode];
+    firstBtn.innerHTML=`${modeIcon[next]} Try ${modeLabel[next]}`;
+    firstBtn.addEventListener('click',()=>{
+      document.querySelectorAll('.mtab').forEach(t=>{
+        const on=t.dataset.mode===next;
+        t.classList.toggle('on',on);
+        t.setAttribute('aria-pressed',on);
+      });
+      aMode=next;
+      const m=MMETA[aMode];
+      const ico=document.getElementById('modeIco');
+      ico.textContent=m.icon;ico.style.background=m.color+'1a';
+      document.getElementById('modeL').textContent=m.label;
+      document.getElementById('modeD').textContent=m.desc;
+      const lbl={longest:'FIND THE LONGEST ROUTE →',transfers:'FIND THE MOST TRANSFERS →',stops:'FIND THE MOST STOPS →',sidequest:'🎲 ROLL THE DICE →'};
+      document.getElementById('ctaBtn').textContent=lbl[aMode];
+      document.getElementById('ctaBtn').click();
+    });
   }
+  row.appendChild(firstBtn);
+
+  // Reverse route
+  const revBtn=document.createElement('button');
+  revBtn.className='whatnow-btn';
+  revBtn.innerHTML='⇄ Reverse route';
+  revBtn.addEventListener('click',()=>{
+    [originId,destId]=[destId,originId];
+    const oi=document.getElementById('originInput'),di=document.getElementById('destInput');
+    [oi.value,di.value]=[di.value,oi.value];
+    document.getElementById('ctaBtn').click();
+  });
+  row.appendChild(revBtn);
+
+  // Share
+  const shareBtn=document.createElement('button');
+  shareBtn.className='whatnow-btn';
+  shareBtn.innerHTML='↑ Share';
+  shareBtn.addEventListener('click',async()=>{
+    const url=location.href;
+    const title=document.getElementById('rTitle').textContent;
+    if(navigator.share){
+      try{ await navigator.share({title:`DETOUR NYC — ${title}`,url}); }
+      catch(e){ if(e.name!=='AbortError') await copyLink(url,shareBtn); }
+    } else {
+      await copyLink(url,shareBtn);
+    }
+  });
+  row.appendChild(shareBtn);
+
+  document.getElementById('timeline').after(row);
 }
 
 // Direction label for a leg of the journey
