@@ -1834,9 +1834,8 @@ function makeCard(i, path, delay, legTime, legDestId, showBoro){
       <div class="tinstruct">${instruct}</div>
       ${next?(dep==='T'?`<div class="tride">
         <div class="tride-top">
-          <span class="walk-leg">🚶 Walk <strong>${Math.round(next.t)} min</strong></span>
+          <span class="walk-leg">🚶 Walk <strong>${Math.round(next.t)} min</strong> to <strong>${ST[next.s]?.n||'next stop'}</strong></span>
         </div>
-        <div class="tride-dest"><span class="tride-dest-label">Exit at</span>${ST[next.s]?.n||'next stop'}</div>
       </div>`:`<div class="tride">
         <div class="tride-top">
           <div class="tpill" style="background:${lc(dep)};color:${yt(dep)}">${dep}</div>
