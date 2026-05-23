@@ -1407,7 +1407,7 @@ function buildMap(route,fastest){
   for(const sid of xferSids) addDot(sid,{r:'6',fill:'#fff',stroke:'#16140f','stroke-width':'2'});
 
   // A/B markers (spec: r=18, fill #16140f, stroke white 3px, Syne 800 size 20)
-  addDot(startSid,{r:'18',fill:'#16140f',stroke:'#fff','stroke-width':'3'});
+  addDot(startSid,{r:'18',fill:'#EE352E',stroke:'#fff','stroke-width':'3'});
   addDot(endSid,  {r:'18',fill:'#16140f',stroke:'#fff','stroke-width':'3'});
 
   // AB labels on top (pointer-events:none so they don't block circle hover)
@@ -1778,7 +1778,7 @@ function makeCard(i, path, delay, legTime, legDestId, showBoro){
   // Dot shows departure line ("what leaves from here") — consistent with the
   // connector below it, and avoids showing N when you're actually about to walk.
   const showDep=dep&&dep!=='T';
-  const dotBg=isStart||isEnd?'#18150F':(showDep?lc(dep):'#D1CEC9');
+  const dotBg=isStart?'#EE352E':isEnd?'#18150F':(showDep?lc(dep):'#D1CEC9');
   const dotTxt=isStart||isEnd?'#fff':(showDep?yt(dep):'#888');
   const dotLabel=isStart?'A':isEnd?'B':(showDep?dep:'🚶');
   const connBg=dep&&dep!=='T'?lc(dep):'#D1CEC9';
