@@ -649,7 +649,7 @@ footer a{color:var(--text-3);text-decoration:underline}
       <div class="lp bob" style="background:#69B844;animation-delay:1.04s"         aria-hidden="true">G</div>
     </div>
     <div class="ltxt" id="ltxt">CALCULATING CHAOS…</div>
-    <div class="lsub">finding the most scenic detours</div>
+    <div class="lsub" id="lsub">hold tight. scenic routes take some thought.</div>
   </div>
 
   <div class="results" id="results" aria-live="polite" aria-atomic="false">
@@ -1084,7 +1084,7 @@ function initApp(){
       ico.textContent=m.icon;ico.style.background=m.color+'1a';
       document.getElementById('modeL').textContent=m.label;
       document.getElementById('modeD').textContent=m.desc;
-      const lbl={longest:'FIND THE LONGEST ROUTE →',transfers:'FIND THE MOST TRANSFERS →',stops:'FIND THE MOST STOPS →',sidequest:'🎲 ROLL THE DICE →'};
+      const lbl={longest:'FIND THE LONGEST ROUTE →',transfers:'MAX OUT THE TRANSFERS →',stops:'VISIT EVERY STOP →',sidequest:'🎲 ROLL THE DICE →'};
       document.getElementById('ctaBtn').textContent=lbl[pMode];
     }
     document.getElementById('ctaBtn').click();
@@ -1110,10 +1110,10 @@ loadGraph()
 
 // Mode tabs
 const MMETA={
-  longest:  {label:'The Long Way',    icon:'🐢',color:'#EE352E',desc:'Maximum travel time. We\'ll find the most roundabout, scenic route possible. We have all day.'},
-  transfers:{label:'Transfer Frenzy', icon:'🔀',color:'#FCCC0A',desc:'Most line changes. Zigzag across the system and collect train lines like Pokémon.'},
-  stops:    {label:'Every Stop',      icon:'📍',color:'#00933C',desc:'Maximum stations visited. The grand borough-hopping tour of New York City.'},
-  sidequest:{label:'Detour Roulette', icon:'🎲',color:'#B933AD',desc:'A random, unexpected detour before your destination. You\'ll get there. Eventually.'},
+  longest:  {label:'The Long Way',    icon:'🐢',color:'#EE352E',desc:'We\'ll find the most roundabout, scenic route the system will allow. We have all day.'},
+  transfers:{label:'Transfer Frenzy', icon:'🔀',color:'#FCCC0A',desc:'Zigzag across the system and collect train lines like Pokémon.'},
+  stops:    {label:'Every Stop',      icon:'📍',color:'#00933C',desc:'Every stop, every borough, no express trains. The full New York.'},
+  sidequest:{label:'Detour Roulette', icon:'🎲',color:'#B933AD',desc:'We\'ll throw in a random detour before your destination. You\'ll get there. Eventually.'},
 };
 document.getElementById('modeTabs').addEventListener('click',e=>{
   const tab=e.target.closest('.mtab');if(!tab)return;
@@ -1183,6 +1183,12 @@ const LMSGS={
   stops:['MAPPING THE GRAND TOUR…','VISITING EVERY BOROUGH…'],
   sidequest:['ROLLING THE DICE…','ASKING THE TRANSIT GODS…'],
 };
+const LSUBS={
+  longest:'hold tight. scenic routes take some thought.',
+  transfers:'zigzagging through the whole system…',
+  stops:'hitting every platform we can find…',
+  sidequest:'the dice are rolling…',
+};
 document.getElementById('ctaBtn').addEventListener('click',()=>{
   const err=document.getElementById('errbox'),etxt=document.getElementById('errTxt');
   err.classList.remove('on');
@@ -1196,6 +1202,7 @@ document.getElementById('ctaBtn').addEventListener('click',()=>{
   res.classList.remove('on');ld.classList.add('on');
   const msgs=LMSGS[aMode]||LMSGS.longest;
   document.getElementById('ltxt').textContent=msgs[Math.floor(Math.random()*msgs.length)];
+  document.getElementById('lsub').textContent=LSUBS[aMode]||LSUBS.longest;
   setTimeout(()=>{
     ld.classList.remove('on');
     const fastest=dijkstra(originId,destId);
@@ -1204,7 +1211,7 @@ document.getElementById('ctaBtn').addEventListener('click',()=>{
     else if(aMode==='transfers') route=transferRoute(originId,destId);
     else if(aMode==='stops')     route=stopsRoute(originId,destId);
     else                          route=sideQuestRoute(originId,destId);
-    if(!route){etxt.textContent='We came up empty. Try a different station pair.';err.classList.add('on');return;}
+    if(!route){etxt.textContent='The subway gave up on this one. Try a different pair.';err.classList.add('on');return;}
     renderResults(route,fastest);
     res.classList.add('on');
     setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),100);
@@ -1213,10 +1220,10 @@ document.getElementById('ctaBtn').addEventListener('click',()=>{
 
 // Render
 const RMETA={
-  longest:  {badge:'🐢 The Long Way',  title:r=>`${Math.round(r.time)}-Minute Odyssey`,   sub:r=>r.detourVia?`Detoured via ${r.detourVia}.`:`That's a lot of subway.`},
+  longest:  {badge:'🐢 The Long Way',  title:r=>`${Math.round(r.time)}-Minute Odyssey`,   sub:r=>r.detourVia?`We took a little detour through ${r.detourVia}.`:`That's a lot of subway.`},
   transfers:{badge:'🔀 Transfer Frenzy',title:r=>`${r.xfers} Line Change${r.xfers!==1?'s':''}`,sub:()=>`Your MetroCard is getting a serious workout today.`},
-  stops:    {badge:'📍 Grand Tour',    title:r=>`${r.stops}-Station Adventure`,            sub:()=>`Every station, no shortcuts.`},
-  sidequest:{badge:'🎲 Detour Roulette',title:r=>r.sideStop?`Via ${r.sideStop.split('–')[0].trim()}`:`Mystery Route`,sub:r=>r.sideStop?`Quick detour to ${r.sideStop} first.`:`Trust the process.`},
+  stops:    {badge:'📍 Grand Tour',    title:r=>`${r.stops}-Station Adventure`,            sub:()=>`No express. No shortcuts. All of it.`},
+  sidequest:{badge:'🎲 Detour Roulette',title:r=>r.sideStop?`Via ${r.sideStop.split('–')[0].trim()}`:`Mystery Route`,sub:r=>r.sideStop?`The dice said ${r.sideStop.split('–')[0].trim()} first. Who are we to argue.`:`Trust the process.`},
 };
 
 function lc(l){return LC[l]||'#808080';}
@@ -1648,7 +1655,7 @@ function renderResults(route,fastest){
   document.getElementById('rSub').textContent=m.sub(route);
   const arrivalMs=Date.now()+Math.round(route.time)*60000;
   const arrivalStr=new Date(arrivalMs).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
-  document.getElementById('rArrival').textContent=`Depart now → arrive ~${arrivalStr} · estimate based on schedule data`;
+  document.getElementById('rArrival').textContent=`leave now → you'd arrive around ${arrivalStr} · give or take a G train delay`;
   document.getElementById('sTime').textContent=Math.round(route.time);
   document.getElementById('sXfers').textContent=route.xfers;
   document.getElementById('sStops').textContent=route.stops;
@@ -1764,7 +1771,7 @@ function makeCard(i, path, delay, legTime, legDestId, showBoro){
   if(isStart)        instruct=`🚇 Board the <strong>${dep}</strong> train${dirTag}`;
   else if(isEnd)     instruct=`🎉 Exit here — you've arrived!`;
   else if(isXfer)    instruct=`🔀 Get off &amp; transfer to the <strong>${dep}</strong> train${dirTag}`;
-  else if(dep==='T') instruct=`🚶 Get off here — walk to connecting platform`;
+  else if(dep==='T') instruct=`🚶 Walk to the connecting platform`;
   else if(arr==='T') instruct=`🚇 Board the <strong>${dep}</strong> train${dirTag}`;
   else               instruct=`Stay on the <strong>${arr}</strong> train${dirTag}`;
 
