@@ -329,7 +329,9 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
 
 /* ── LOADING ── */
 .loading{display:none;text-align:center;padding:3.5rem 0}
-.loading.on{display:block}
+.loading.on{display:block;animation:fup .25s ease}
+.loading.fade-out{animation:fadeOut .2s ease forwards}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
 .spinner{
   width:38px;height:38px;border-radius:50%;
   border:3px solid var(--border);border-top-color:var(--red);
@@ -1243,17 +1245,20 @@ document.getElementById('ctaBtn').addEventListener('click',()=>{
   document.getElementById('ltxt').textContent=msgs[Math.floor(Math.random()*msgs.length)];
   document.getElementById('lsub').textContent=LSUBS[aMode]||LSUBS.longest;
   setTimeout(()=>{
-    ld.classList.remove('on');
-    const fastest=dijkstra(originId,destId);
-    let route;
-    if(aMode==='longest')      route=longestRoute(originId,destId);
-    else if(aMode==='transfers') route=transferRoute(originId,destId);
-    else if(aMode==='stops')     route=stopsRoute(originId,destId);
-    else                          route=sideQuestRoute(originId,destId);
-    if(!route){etxt.textContent='The subway gave up on this one. Try a different pair.';err.classList.add('on');return;}
-    renderResults(route,fastest);
-    res.classList.add('on');
-    setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    ld.classList.add('fade-out');
+    setTimeout(()=>{
+      ld.classList.remove('on','fade-out');
+      const fastest=dijkstra(originId,destId);
+      let route;
+      if(aMode==='longest')      route=longestRoute(originId,destId);
+      else if(aMode==='transfers') route=transferRoute(originId,destId);
+      else if(aMode==='stops')     route=stopsRoute(originId,destId);
+      else                          route=sideQuestRoute(originId,destId);
+      if(!route){etxt.textContent='The subway gave up on this one. Try a different pair.';err.classList.add('on');return;}
+      renderResults(route,fastest);
+      res.classList.add('on');
+      setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    },200);
   },880);
 });
 
