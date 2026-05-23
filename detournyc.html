@@ -355,8 +355,8 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
 }
 .r-title{
   font-family:'Syne',sans-serif;
-  font-size:clamp(1rem,2.5vw,1.2rem);
-  font-weight:600;letter-spacing:.01em;line-height:1.3;
+  font-size:clamp(1.2rem,3vw,1.55rem);
+  font-weight:700;letter-spacing:.01em;line-height:1.3;
   color:var(--text-2);margin-bottom:.15rem;
 }
 .r-sub{font-size:.83rem;color:var(--text-3);margin-bottom:.25rem}
@@ -439,8 +439,8 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
   margin:0 0 0 .7rem;box-shadow:var(--sh-sm);
 }
 .xfer-lbl{
-  font-family:'Syne',sans-serif;font-size:.52rem;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:.22rem;
+  font-family:'Syne',sans-serif;font-size:.55rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.22rem;
 }
 .xfer-station{
   font-family:'JetBrains Mono',monospace;font-size:.87rem;font-weight:500;
@@ -576,7 +576,6 @@ footer a{color:var(--text-3);text-decoration:underline}
   header{padding:1.4rem 1.1rem 1rem}
   main{padding:2rem 1rem 5rem}
   .logo em{display:block}
-  .hdr-lines{display:none}
   .search-inner{grid-template-columns:1fr}
   .sf:first-child{border-right:none;border-bottom:1px solid var(--border)}
   .sf:last-child{border-left:none;border-top:1px solid var(--border)}
@@ -995,13 +994,6 @@ function sideQuestRoute(s,e){
 // ── INIT ──
 
 let originId=null,destId=null,aMode='longest';
-
-function renderLineDots(){
-  const lines=[...new Set(Object.values(ST).flatMap(s=>s.lines))].sort();
-  document.getElementById('hdrLines').innerHTML=lines.map(l=>
-    `<div class="lp" style="background:${LC[l]||'#808183'};${YEL.has(l)?'color:#000;':''}">${l}</div>`
-  ).join('');
-}
 
 // Autocomplete — ARIA 1.2 combobox pattern
 function makeAC(inId,acId,onPick){
@@ -1778,7 +1770,7 @@ function buildWhatNow(){
       document.querySelectorAll('.mtab').forEach(t=>{
         const on=t.dataset.mode===next;
         t.classList.toggle('on',on);
-        t.setAttribute('aria-pressed',on);
+        t.setAttribute('aria-pressed',on?'true':'false');
       });
       aMode=next;
       const m=MMETA[aMode];
