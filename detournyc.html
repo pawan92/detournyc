@@ -9,14 +9,14 @@
 <meta property="og:type"        content="website">
 <meta property="og:url"         content="https://www.detour.nyc/">
 <meta property="og:title"       content="DETOUR NYC">
-<meta property="og:description" content="Subway routes for people not in a hurry. Find the longest, most roundabout way to get anywhere in NYC.">
+<meta property="og:description" content="The MTA's least useful planning tool. Subway routes for people not in a hurry.">
 <meta property="og:image"       content="https://www.detour.nyc/og.png">
 <meta property="og:image:width"  content="1200">
 <meta property="og:image:height" content="630">
 <!-- Twitter / X -->
 <meta name="twitter:card"        content="summary_large_image">
 <meta name="twitter:title"       content="DETOUR NYC">
-<meta name="twitter:description" content="Subway routes for people not in a hurry. Find the longest, most roundabout way to get anywhere in NYC.">
+<meta name="twitter:description" content="The MTA's least useful planning tool. Subway routes for people not in a hurry.">
 <meta name="twitter:image"       content="https://www.detour.nyc/og.png">
 <!-- General -->
 <meta name="description" content="Subway routes for people not in a hurry. Find the longest, most roundabout way to get anywhere in NYC.">
@@ -308,7 +308,7 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
   width:100%;border:none;
   background:var(--red);color:#fff;
   font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;
-  letter-spacing:.07em;text-transform:uppercase;
+  letter-spacing:.03em;
   padding:1.05rem;border-radius:14px;cursor:pointer;
   transition:all .2s;
   box-shadow:0 4px 16px rgba(238,53,46,.28);
@@ -622,7 +622,7 @@ footer a{color:var(--text-3);text-decoration:underline}
     <button class="qpill" data-from="Bedford Av" data-to="Lorimer St">Bedford Av → Lorimer St</button>
   </div>
 
-  <div class="sec-label">Your Journey</div>
+  <div class="sec-label">Where you're going (eventually)</div>
   <div class="search-card">
     <div class="search-inner">
       <div class="sf">
@@ -631,7 +631,7 @@ footer a{color:var(--text-3);text-decoration:underline}
           <input class="sinput" id="originInput"
             role="combobox" aria-expanded="false" aria-controls="originAC"
             aria-autocomplete="list" aria-haspopup="listbox"
-            placeholder="Starting station…" autocomplete="off" spellcheck="false">
+            placeholder="anywhere is fine…" autocomplete="off" spellcheck="false">
           <div class="ac" id="originAC" role="listbox" aria-label="Origin station suggestions"></div>
         </div>
       </div>
@@ -645,14 +645,14 @@ footer a{color:var(--text-3);text-decoration:underline}
           <input class="sinput" id="destInput"
             role="combobox" aria-expanded="false" aria-controls="destAC"
             aria-autocomplete="list" aria-haspopup="listbox"
-            placeholder="Destination…" autocomplete="off" spellcheck="false">
+            placeholder="somewhere you have all day to reach…" autocomplete="off" spellcheck="false">
           <div class="ac" id="destAC" role="listbox" aria-label="Destination station suggestions"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="sec-label">Detour Modes</div>
+  <div class="sec-label">How wrong do you want to go?</div>
   <div class="mode-card">
     <div class="mode-tabs" id="modeTabs">
       <button class="mtab on" data-mode="longest"   aria-pressed="true">🐢 The Long Way</button>
@@ -670,7 +670,7 @@ footer a{color:var(--text-3);text-decoration:underline}
     </div>
   </div>
 
-  <button class="cta" id="ctaBtn">FIND THE LONGEST ROUTE →</button>
+  <button class="cta" id="ctaBtn">We have all day →</button>
 
   <div class="errbox" id="errbox" role="alert" aria-live="assertive"><span>⚠</span><span id="errTxt"></span></div>
 
@@ -740,7 +740,7 @@ footer a{color:var(--text-3);text-decoration:underline}
 </main>
 
 <footer>
-  For entertainment only. Not affiliated with the MTA. · <a href="https://new.mta.info/" target="_blank">Data: Metropolitan Transportation Authority</a>
+  For entertainment only. The MTA hasn't sued us yet. · <a href="https://new.mta.info/" target="_blank">Data: Metropolitan Transportation Authority</a>
 </footer>
 
 <script>
@@ -1027,6 +1027,7 @@ function makeAC(inId,acId,onPick){
   }
 
   inp.addEventListener('input',()=>{
+    onPick(null);// clear the ID whenever user edits the field manually
     const q=inp.value.toLowerCase().trim();
     if(!q){setExpanded(false);return;}
     const hits=Object.entries(ST)
@@ -1106,7 +1107,7 @@ function initApp(){
   document.getElementById('originInput').disabled=false;
   document.getElementById('destInput').disabled=false;
   document.getElementById('ctaBtn').disabled=false;
-  document.getElementById('ctaBtn').textContent='FIND THE LONGEST ROUTE →';
+  document.getElementById('ctaBtn').textContent='We have all day →';
   document.getElementById('graphStatus').style.display='none';
   annotatePills();
   // Parse URL params and auto-run if present
@@ -1125,7 +1126,7 @@ function initApp(){
       ico.textContent=m.icon;ico.style.background=m.color+'1a';
       document.getElementById('modeL').textContent=m.label;
       document.getElementById('modeD').textContent=m.desc;
-      const lbl={longest:'FIND THE LONGEST ROUTE →',transfers:'MAX OUT THE TRANSFERS →',stops:'VISIT EVERY STOP →',sidequest:'🎲 ROLL THE DICE →'};
+      const lbl={longest:'We have all day →',transfers:'Change trains. A lot. →',stops:'No stop left behind →',sidequest:'I trust you →'};
       document.getElementById('ctaBtn').textContent=lbl[pMode];
     }
     document.getElementById('ctaBtn').click();
@@ -1165,7 +1166,7 @@ document.getElementById('modeTabs').addEventListener('click',e=>{
   ico.textContent=m.icon;ico.style.background=m.color+'1a';
   document.getElementById('modeL').textContent=m.label;
   document.getElementById('modeD').textContent=m.desc;
-  const lbl={longest:'FIND THE LONGEST ROUTE →',transfers:'FIND THE MOST TRANSFERS →',stops:'FIND THE MOST STOPS →',sidequest:'🎲 ROLL THE DICE →'};
+  const lbl={longest:'We have all day →',transfers:'Change trains. A lot. →',stops:'No stop left behind →',sidequest:'I trust you →'};
   document.getElementById('ctaBtn').textContent=lbl[aMode];
   updateModePreview();
 });
@@ -1233,13 +1234,16 @@ const LSUBS={
 document.getElementById('ctaBtn').addEventListener('click',()=>{
   const err=document.getElementById('errbox'),etxt=document.getElementById('errTxt');
   err.classList.remove('on');
-  // Auto-pick first match if user typed but didn't click an autocomplete item
-  if(!originId){const t=document.getElementById('originInput').value.trim();if(t){const m=findStation(t);if(m){originId=m;document.getElementById('originInput').value=ST[m].n;}}}
-  if(!destId){const t=document.getElementById('destInput').value.trim();if(t){const m=findStation(t);if(m){destId=m;document.getElementById('destInput').value=ST[m].n;}}}
-  if(!originId){etxt.textContent='Every detour needs a starting point. Pick a station.';err.classList.add('on');return;}
-  if(!destId){etxt.textContent='Even a detour goes somewhere. Eventually. Pick a destination.';err.classList.add('on');return;}
-  if(originId===destId){etxt.textContent="That's just standing on the platform. Pick a different destination.";err.classList.add('on');return;}
-  const ld=document.getElementById('loading'),res=document.getElementById('results');
+  // Sync IDs with current input state — clear if empty, auto-resolve if typed but not picked
+  const ot=document.getElementById('originInput').value.trim();
+  const dt=document.getElementById('destInput').value.trim();
+  if(!ot){originId=null;}else if(!originId){const m=findStation(ot);if(m){originId=m;document.getElementById('originInput').value=ST[m].n;}}
+  if(!dt){destId=null;}else if(!destId){const m=findStation(dt);if(m){destId=m;document.getElementById('destInput').value=ST[m].n;}}
+  const res=document.getElementById('results');
+  if(!originId){etxt.textContent='Every detour needs a starting point. Pick a station.';err.classList.add('on');res.classList.remove('on');return;}
+  if(!destId){etxt.textContent='Even a detour goes somewhere. Eventually. Pick a destination.';err.classList.add('on');res.classList.remove('on');return;}
+  if(originId===destId){etxt.textContent="That's just standing on the platform. Pick a different destination.";err.classList.add('on');res.classList.remove('on');return;}
+  const ld=document.getElementById('loading');
   res.classList.remove('on');ld.classList.add('on');
   const msgs=LMSGS[aMode]||LMSGS.longest;
   document.getElementById('ltxt').textContent=msgs[Math.floor(Math.random()*msgs.length)];
@@ -1782,7 +1786,7 @@ function buildWhatNow(){
       ico.textContent=m.icon;ico.style.background=m.color+'1a';
       document.getElementById('modeL').textContent=m.label;
       document.getElementById('modeD').textContent=m.desc;
-      const lbl={longest:'FIND THE LONGEST ROUTE →',transfers:'FIND THE MOST TRANSFERS →',stops:'FIND THE MOST STOPS →',sidequest:'🎲 ROLL THE DICE →'};
+      const lbl={longest:'We have all day →',transfers:'Change trains. A lot. →',stops:'No stop left behind →',sidequest:'I trust you →'};
       document.getElementById('ctaBtn').textContent=lbl[aMode];
       document.getElementById('ctaBtn').click();
     });
