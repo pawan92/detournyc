@@ -1474,18 +1474,8 @@ function buildMap(route,fastest){
     'letter-spacing':'1',fill:'#7a7468'},lg);
   lt2.textContent='DIRECT ROUTE';
 
-  // ── Corner stamp (spec: translate(820,820), 10px, letter-spacing 2) ────────
-  let dc=0;
-  try{dc=parseInt(localStorage.getItem('detourCount')||'0')+1;localStorage.setItem('detourCount',dc);}catch(e){}
-  const sg=svgEl('g',{transform:'translate(820,820)'},svg);
-  const s1=svgEl('text',{x:'0',y:'0','text-anchor':'start',
-    'font-family':'"JetBrains Mono",monospace','font-size':'10','font-weight':'500',
-    'letter-spacing':'2',fill:'#7a7468'},sg);
-  s1.textContent=`DETOUR № ${String(dc).padStart(4,'0')}`;
-  const s2=svgEl('text',{x:'0',y:'15','text-anchor':'start',
-    'font-family':'"JetBrains Mono",monospace','font-size':'10','font-weight':'500',
-    'letter-spacing':'2',fill:'#7a7468'},sg);
-  s2.textContent='VERIFIED ABSURD';
+  // increment detour counter (used elsewhere for passport/stats)
+  try{const dc=parseInt(localStorage.getItem('detourCount')||'0')+1;localStorage.setItem('detourCount',dc);}catch(e){}
 
   }catch(err){
     // Surface any map rendering error in the header so it's visible
