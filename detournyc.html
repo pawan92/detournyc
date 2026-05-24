@@ -1725,9 +1725,9 @@ function renderResults(route,fastest){
   const arrivalMs=Date.now()+Math.round(route.time)*60000;
   const arrivalStr=new Date(arrivalMs).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
   document.getElementById('rArrival').textContent=`leave now → you'd arrive around ${arrivalStr} · give or take a G train delay`;
-  document.getElementById('sTime').textContent=Math.round(route.time);
-  document.getElementById('sXfers').textContent=route.xfers;
-  document.getElementById('sStops').textContent=route.stops;
+  countUp(document.getElementById('sTime'),Math.round(route.time));
+  countUp(document.getElementById('sXfers'),route.xfers);
+  countUp(document.getElementById('sStops'),route.stops);
   const diff=fastest?Math.round(Math.max(0,route.time-fastest.time)):null;
 
   // Hero stat: champion the metric this mode is actually about
