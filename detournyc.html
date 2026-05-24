@@ -233,9 +233,19 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
   width:100%;background:transparent;border:none;outline:none;
   font-family:'JetBrains Mono',monospace;
   font-size:.875rem;font-weight:500;color:var(--text-1);
-  caret-color:var(--red);
+  caret-color:var(--red);padding-right:1.6rem;
 }
 .sinput::placeholder{color:var(--text-3)}
+.clear-btn{
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;border-radius:50%;border:none;
+  background:var(--border);color:var(--text-2);
+  font-size:.7rem;line-height:1;cursor:pointer;
+  display:none;align-items:center;justify-content:center;padding:0;
+  transition:background .15s,color .15s;
+}
+.clear-btn.visible{display:flex}
+.clear-btn:hover{background:var(--red);color:#fff}
 .swap-col{display:flex;align-items:center;justify-content:center}
 .swap-btn{
   width:36px;height:36px;border-radius:50%;
@@ -638,6 +648,7 @@ footer a{color:var(--text-3);text-decoration:underline}
             role="combobox" aria-expanded="false" aria-controls="originAC"
             aria-autocomplete="list" aria-haspopup="listbox"
             placeholder="anywhere is fine…" autocomplete="off" spellcheck="false">
+          <button class="clear-btn" id="originClear" aria-label="Clear origin" tabindex="-1">×</button>
           <div class="ac" id="originAC" role="listbox" aria-label="Origin station suggestions"></div>
         </div>
       </div>
@@ -652,6 +663,7 @@ footer a{color:var(--text-3);text-decoration:underline}
             role="combobox" aria-expanded="false" aria-controls="destAC"
             aria-autocomplete="list" aria-haspopup="listbox"
             placeholder="somewhere you have all day to reach…" autocomplete="off" spellcheck="false">
+          <button class="clear-btn" id="destClear" aria-label="Clear destination" tabindex="-1">×</button>
           <div class="ac" id="destAC" role="listbox" aria-label="Destination station suggestions"></div>
         </div>
       </div>
@@ -1043,7 +1055,7 @@ function makeAC(inId,acId,onPick){
     ac.querySelectorAll('.aci').forEach(el=>{
       el.addEventListener('mousedown',ev=>{
         ev.preventDefault();// keep focus on input
-        const id=el.dataset.id;inp.value=ST[id].n;setExpanded(false);onPick(id);
+        const id=el.dataset.id;inp.value=ST[id].n;setExpanded(false);onPick(id);inp.dispatchEvent(new CustomEvent('x-sync-clear'));
       });
     });
     setExpanded(true);
@@ -1092,6 +1104,26 @@ function updateModePreview(){
 function initApp(){
   makeAC('originInput','originAC',id=>{originId=id;updateModePreview();});
   makeAC('destInput','destAC',id=>{destId=id;updateModePreview();});
+
+  function initClear(inputId,clearId,onClear){
+    const inp=document.getElementById(inputId);
+    const btn=document.getElementById(clearId);
+    const sync=()=>btn.classList.toggle('visible',inp.value.length>0);
+    inp.addEventListener('input',sync);
+    inp.addEventListener('x-sync-clear',sync);
+    btn.addEventListener('mousedown',e=>{
+      e.preventDefault();
+      inp.value='';
+      onClear();
+      sync();
+      inp.focus();
+    });
+    return sync;
+  }
+  const syncOrigin=initClear('originInput','originClear',()=>{originId=null;updateModePreview();});
+  const syncDest=initClear('destInput','destClear',()=>{destId=null;updateModePreview();});
+  // Sync after URL params or any programmatic value set
+  setTimeout(()=>{syncOrigin();syncDest();},0);
   document.querySelector('.logo').addEventListener('click',()=>{
     originId=null; destId=null;
     document.getElementById('originInput').value='';
