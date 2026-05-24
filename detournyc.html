@@ -478,7 +478,24 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
 .make-day-body{font-family:'Figtree',sans-serif;font-style:italic;font-size:.95rem;color:var(--text-2);text-align:center;margin-bottom:1.2rem;line-height:1.5}
 .make-day-btns{display:flex;gap:.8rem}
 .make-day-btns .whatnow-btn{flex:1;justify-content:center}
-@media(max-width:480px){.make-day-btns{flex-direction:column}.make-day-btns .whatnow-btn{flex:none;width:100%}}
+.cal-picker-wrap{position:relative;flex:1;display:flex;flex-direction:column}
+.cal-picker-wrap .whatnow-btn{width:100%;justify-content:center}
+.cal-picker{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;
+  background:var(--card);border:1.5px solid var(--border);border-radius:12px;
+  overflow:hidden;z-index:100;box-shadow:var(--sh-md);
+}
+.cal-picker[hidden]{display:none}
+.cal-picker-opt{
+  display:flex;align-items:center;gap:.6rem;width:100%;
+  background:none;border:none;padding:.75rem 1rem;
+  font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--text-1);
+  cursor:pointer;text-align:left;transition:background .15s,color .15s;
+}
+.cal-picker-opt:not(:last-child){border-bottom:1px solid var(--border)}
+.cal-picker-opt:hover{background:var(--bg2);color:var(--red)}
+@media(max-width:480px){.make-day-btns{flex-direction:column}.make-day-btns .whatnow-btn,.cal-picker-wrap{flex:none;width:100%}}
 .tcard.done{border-color:rgba(0,147,60,.3);background:#F5FBF7}
 .tcard.walk-arrival{}
 .tname{font-family:'JetBrains Mono',monospace;font-size:.87rem;font-weight:500;color:var(--text-1);line-height:1.3;margin-bottom:.15rem}
@@ -1853,13 +1870,58 @@ function buildWhatNow(route){
     <div class="make-day-divider"><span>Make a day of it</span></div>
     <p class="make-day-body">${mins} minutes underground is a real commitment. Pencil it in. Bring a friend.</p>
     <div class="make-day-btns">
-      <button class="whatnow-btn" id="calBtn">📅 Add to calendar</button>
+      <div class="cal-picker-wrap">
+        <button class="whatnow-btn" id="calBtn">📅 Add to calendar</button>
+        <div class="cal-picker" id="calPicker" hidden>
+          <button class="cal-picker-opt" id="calGoogle">🗓 Google Calendar</button>
+          <button class="cal-picker-opt" id="calApple">🍎 Apple / iCal</button>
+        </div>
+      </div>
       <button class="whatnow-btn" id="parBtn">👥 Plan it on Partiful</button>
     </div>
   `;
   row.after(makeDay);
-  makeDay.querySelector('#calBtn').addEventListener('click',()=>downloadIcs(route));
+  const calBtn=makeDay.querySelector('#calBtn');
+  const calPicker=makeDay.querySelector('#calPicker');
+  calBtn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const opening=calPicker.hidden;
+    calPicker.hidden=false;
+    if(opening){
+      const close=ev=>{
+        if(!calPicker.contains(ev.target)&&ev.target!==calBtn){
+          calPicker.hidden=true;
+          document.removeEventListener('click',close);
+        }
+      };
+      document.addEventListener('click',close);
+    } else {
+      calPicker.hidden=true;
+    }
+  });
+  makeDay.querySelector('#calGoogle').addEventListener('click',()=>{openGoogleCalendar(route);calPicker.hidden=true;});
+  makeDay.querySelector('#calApple').addEventListener('click',()=>{downloadIcs(route);calPicker.hidden=true;});
   makeDay.querySelector('#parBtn').addEventListener('click',()=>openPartiful(route));
+}
+
+function openGoogleCalendar(route){
+  const oName=ST[originId]?.n||'Origin';
+  const dName=ST[destId]?.n||'Destination';
+  const now=new Date();
+  const start=new Date(now);
+  start.setMinutes(0,0,0);
+  start.setDate(start.getDate()+7);
+  start.setHours(11);
+  const end=new Date(start.getTime()+Math.round(route.time)*60000);
+  const fmt=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+  const params=new URLSearchParams({
+    action:'TEMPLATE',
+    text:`DETOUR — ${oName} → ${dName}`,
+    dates:`${fmt(start)}/${fmt(end)}`,
+    details:`A ${Math.round(route.time)}-minute scenic detour through NYC. ${route.stops} stations, ${route.xfers} transfers. Plan: ${location.href}`,
+    location:`${oName} subway station, NYC`,
+  });
+  window.open(`https://calendar.google.com/calendar/render?${params}`,'_blank');
 }
 
 function downloadIcs(route){
