@@ -461,6 +461,13 @@ main{position:relative;z-index:1;max-width:1120px;width:100%;margin:0 auto;paddi
 }
 .whatnow-btn:hover{border-color:var(--red);color:var(--red);box-shadow:0 0 0 3px var(--red-s),var(--sh-sm);transform:translateY(-1px)}
 .whatnow-btn:active{transform:none}
+.make-day-section{margin-top:1.8rem;margin-left:calc(2.4rem + .7rem)}
+.make-day-divider{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+.make-day-divider::before,.make-day-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.make-day-divider span{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);white-space:nowrap}
+.make-day-body{font-family:'Figtree',sans-serif;font-style:italic;font-size:.95rem;color:var(--text-2);text-align:center;margin-bottom:1.2rem;line-height:1.5}
+.make-day-btns{display:flex;gap:.8rem}
+.make-day-btns .whatnow-btn{flex:1;justify-content:center}
 .tcard.done{border-color:rgba(0,147,60,.3);background:#F5FBF7}
 .tcard.walk-arrival{}
 .tname{font-family:'JetBrains Mono',monospace;font-size:.87rem;font-weight:500;color:var(--text-1);line-height:1.3;margin-bottom:.15rem}
@@ -1727,12 +1734,13 @@ function renderResults(route,fastest){
   const shareBtn=document.getElementById('sharePngBtn');
   shareBtn.onclick=()=>shareMapPng(route);
 
-  buildWhatNow();
+  buildWhatNow(route);
 }
 
-function buildWhatNow(){
+function buildWhatNow(route){
   const existing=document.getElementById('whatnowRow');
   if(existing)existing.remove();
+  document.querySelector('.make-day-section')?.remove();
 
   const modeNext={longest:'transfers',transfers:'longest',stops:'sidequest',sidequest:'stops'};
   const modeLabel={longest:'The Long Way',transfers:'Transfer Frenzy',stops:'Every Stop',sidequest:'Detour Roulette'};
@@ -1803,6 +1811,63 @@ function buildWhatNow(){
   row.appendChild(shareBtn);
 
   document.getElementById('timeline').after(row);
+
+  // "Make a day of it" section
+  const makeDay=document.createElement('div');
+  makeDay.className='make-day-section';
+  const mins=Math.round(route.time);
+  makeDay.innerHTML=`
+    <div class="make-day-divider"><span>Make a day of it</span></div>
+    <p class="make-day-body">${mins} minutes underground is a real commitment. Pencil it in. Bring a friend.</p>
+    <div class="make-day-btns">
+      <button class="whatnow-btn" id="calBtn">📅 Add to calendar</button>
+      <button class="whatnow-btn" id="parBtn">👥 Plan it on Partiful</button>
+    </div>
+  `;
+  row.after(makeDay);
+  makeDay.querySelector('#calBtn').addEventListener('click',()=>downloadIcs(route));
+  makeDay.querySelector('#parBtn').addEventListener('click',()=>openPartiful(route));
+}
+
+function downloadIcs(route){
+  const oName=ST[originId]?.n||'Origin';
+  const dName=ST[destId]?.n||'Destination';
+  const now=new Date();
+  const start=new Date(now);
+  start.setMinutes(0,0,0);
+  start.setDate(start.getDate()+7);
+  start.setHours(11);
+  const end=new Date(start.getTime()+Math.round(route.time)*60000);
+  const fmt=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+  const ics=[
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//DETOUR NYC//EN','METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:detour-${Date.now()}@detour.nyc`,
+    `DTSTAMP:${fmt(now)}`,
+    `DTSTART:${fmt(start)}`,
+    `DTEND:${fmt(end)}`,
+    `SUMMARY:DETOUR — ${oName} → ${dName}`,
+    `DESCRIPTION:${Math.round(route.time)}-minute scenic detour. ${route.xfers} transfers\\, ${route.stops} stations. Plan: ${location.href}`,
+    `LOCATION:${oName} subway station\\, NYC`,
+    'END:VEVENT','END:VCALENDAR',
+  ].join('\r\n');
+  const blob=new Blob([ics],{type:'text/calendar'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`detour-${oName.replace(/\s+/g,'-')}-to-${dName.replace(/\s+/g,'-')}.ics`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function openPartiful(route){
+  const oName=ST[originId]?.n||'Origin';
+  const dName=ST[destId]?.n||'Destination';
+  const params=new URLSearchParams({
+    title:`DETOUR — ${oName} → ${dName}`,
+    description:`A ${Math.round(route.time)}-minute scenic detour through NYC. ${route.stops} stations, ${route.xfers} transfers. Map: ${location.href}`,
+    location:`${oName} subway station, NYC`,
+  });
+  window.open(`https://partiful.com/create?${params}`,'_blank');
 }
 
 // Direction label for a leg of the journey
