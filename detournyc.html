@@ -1611,6 +1611,44 @@ document.getElementById('mapExpandBtn').addEventListener('click',()=>{
 
 function yt(l){return YEL.has(l)?'#000':'#fff';}
 
+function timeEquivalent(mins){
+  const short=[
+    `Long enough for a full situationship to develop and end.`,
+    `That's ~${Math.round(mins/0.04/1000)*1000} TikToks you'll never get back.`,
+    `Enough time to go viral and get cancelled.`,
+    `One therapy session. Less effective, more scenic.`,
+    `Long enough to spiral about a text you sent in 2019.`,
+  ];
+  const medium=[
+    `That's a full Spotify rabbit hole with no skip button.`,
+    `Enough time to manifest something. Did it work?`,
+    `One full rotation of the discourse cycle.`,
+    `Long enough to learn a skill on YouTube and immediately forget it.`,
+    `${(mins/45).toFixed(1)} episodes of The Bear. Someone's yelling in both.`,
+    `Enough time to open LinkedIn, feel bad, and close it.`,
+  ];
+  const long=[
+    `That's one full group chat meltdown, recovery, and apology arc.`,
+    `Enough time to watch the Kendrick–Drake beef documentary. Twice.`,
+    `Long enough to finish a whole era of your personality.`,
+    `${(mins/60).toFixed(1)} episodes of The White Lotus. Someone already died.`,
+    `Enough time to start a new identity and abandon it.`,
+  ];
+  const veryLong=[
+    `Long enough to go through all 5 stages of a situationship.`,
+    `You could've watched The Brutalist. You still won't.`,
+    `Enough time for a full Roman Empire thought spiral.`,
+    `That's two full villain arcs, start to finish.`,
+    `Long enough to become a different person entirely.`,
+  ];
+  let pool;
+  if(mins<35)       pool=short;
+  else if(mins<75)  pool=medium;
+  else if(mins<120) pool=long;
+  else              pool=veryLong;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
 function absurdityLine(route, fastest){
   const mins=Math.round(route.time);
   const boroughs=[...new Set(route.path.map(p=>ST[p.s]?.b).filter(Boolean))];
@@ -1751,7 +1789,8 @@ function renderResults(route,fastest){
 
   // Absurdity note
   const note=document.getElementById('absurdityNote');
-  note.textContent=absurdityLine(route,fastest);
+  const equiv=timeEquivalent(Math.round(route.time));
+  note.innerHTML=absurdityLine(route,fastest)+(equiv?`<br><span style="opacity:.75">${equiv}</span>`:'');
   note.style.display='block';
 
   // Push shareable URL
