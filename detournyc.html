@@ -1790,7 +1790,7 @@ function renderResults(route,fastest){
   // Absurdity note
   const note=document.getElementById('absurdityNote');
   const equiv=timeEquivalent(Math.round(route.time));
-  note.innerHTML=absurdityLine(route,fastest)+(equiv?`<br><span style="opacity:.75">${equiv}</span>`:'');
+  note.innerHTML=equiv||absurdityLine(route,fastest);
   note.style.display='block';
 
   // Push shareable URL
